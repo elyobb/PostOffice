@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PostOffice.Shared.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace PostOffice
 {
@@ -31,6 +33,8 @@ namespace PostOffice
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            var connection = @"Server=(localdb)\mssqllocaldb;Database=PostOfficeDB;Trusted_Connection=True;";
+            services.AddDbContext<PostOfficeDbContext>(options => options.UseSqlServer(connection));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

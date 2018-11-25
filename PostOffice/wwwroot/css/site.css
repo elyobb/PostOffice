@@ -12,21 +12,74 @@ body {
     padding-right: 15px;
 }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
+.sidebar {
+    position:absolute;
+    left: 0px;
+    height: 100%;
+    width: 10%;
+    border: 1px solid black;
 }
 
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
+.account {
+    cursor: pointer;
 }
 
-/* QR code generator */
-#qrCode {
-    margin: 15px;
+.account:hover {
+    background-color: lightblue;
 }
+
+.selected {
+    background-color: lightgray;
+    font-weight: bold;
+}
+
+.post-container {
+    width: 90%;
+    left: 10%;
+    position: absolute;
+}
+
+.post-item {
+    border-bottom:1px solid black;
+}
+
+.url {
+    font-weight: bold;
+    font-size:large;
+    text-decoration:underline;
+    padding:5px;
+}
+
+.copy-list-header {
+    padding:5px;
+}
+
+.middle {
+    vertical-align:middle;
+}
+
+.down {
+    position:relative;
+    top:2px;
+}
+.posted {
+    padding-top: 5px
+}
+
+.end-message {
+    text-align: center;
+}
+
+.tag {
+    border-radius: 5px;
+    border: 1px solid black;
+    background: #7f7fff;
+    padding: 2px;
+    color: white;
+}
+
+
+
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
