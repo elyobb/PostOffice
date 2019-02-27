@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using PostOffice.Shared.Models;
 
 namespace PostOffice.Shared.Models
 {
@@ -35,5 +36,7 @@ namespace PostOffice.Shared.Models
                  .HasIndex(a => a.Label)
                  .IsUnique();
         }
+
+        public DbSet<PostOffice.Shared.Models.AccountActivity> AccountActivity { get; set; }
     }
 }

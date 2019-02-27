@@ -93,15 +93,26 @@ namespace PostOffice.Controllers
             var copy = _context.Copy.FirstOrDefault(c => c.Id == copyId);
             var account = _context.Accounts.FirstOrDefault(a => a.Id == accountId);
 
-            copy.PostAccount = checkedState ? account : null;
-            copy.PostAccountId = checkedState ? accountId : null;
+            AccountActivity accountActivity = new AccountActivity();
+            accountActivity.AccountId = account.Id;
+            accountActivity.Account = account;
+            accountActivity.CopyId = copy.Id;
+            accountActivity.Copy = copy;
 
             if (ModelState.IsValid)
             {
-                _context.Update(copy);
-                await _context.SaveChangesAsync();
+                AccountActivitiesController accountActivityController = new AccountActivitiesController(_context);
+                if(checkedState)
+                {
+                    return await accountActivityController.Create(accountActivity);
+                }
+                else
+                {
+                    var existingActivity = _context.AccountActivity.FirstOrDefault(activity => activity.AccountId == account.Id && activity.CopyId == copy.Id);
+                    return await accountActivityController.DeleteConfirmed(existingActivity.Id);
+                }
             }
-            return Json("success! ");
+            return Json("model state invalid: copyController#markPosted");
         }
 
         // GET: Copy/Edit/5

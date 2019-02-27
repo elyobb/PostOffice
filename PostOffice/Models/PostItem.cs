@@ -10,7 +10,7 @@ namespace PostOffice.Shared.Models
 
         public String Url { get; set; }
 
-        public virtual List<Copy> Copy { get; set; }
+        public List<Copy> Copy { get; set; }
    
     }
 }

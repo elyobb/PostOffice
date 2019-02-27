@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PostOffice.Shared.Models;
 
 namespace PostOffice.Migrations
 {
     [DbContext(typeof(PostOfficeDbContext))]
-    partial class PostOfficeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181202183118_account-activity")]
+    partial class accountactivity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

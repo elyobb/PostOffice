@@ -14,8 +14,6 @@ namespace PostOffice.Shared.Models
         public int PostItemId {get;set;}
         [Display(Name = "Post URL")]
         public PostItem PostItem { get; set; }
-        public int? PostAccountId { get; set; }
-        public Account PostAccount { get; set; }
         public virtual List<Tag> Tags { get; set; }
     }
 }
