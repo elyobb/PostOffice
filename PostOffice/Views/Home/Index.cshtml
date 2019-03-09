@@ -15,9 +15,20 @@
         </div>
     </div>
     <div class="post-container">
-        <div class="buttons">
-            <button type="button" id="show-posted">Show Posted</button>
+        <div class="toolbar">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-primary active" id="hide-posted" >
+                    <input type="radio" name="options" autocomplete="off" checked> Hide Posted
+                </label>
+                <label class="btn btn-primary"  id="show-posted" >
+                    <input type="radio" name="options" autocomplete="off"> Show Posted
+                </label>
+            </div>
+            <span class="filter middle">
+                <input type="text" id="filter" onkeyup="filter()" size="35" placeholder="Filter by copy text or tag...">
+            </span>
         </div>
+
         @foreach (var item in Model.postItems)
         {
             <div class="post-item">
@@ -26,8 +37,10 @@
                 <ul class="list-group">
                     @foreach (var copy in item.Copy)
                     {
-                        <li class="list-group-item">
-                            "@Html.DisplayFor(modelItem => copy.Text)"
+                        <li class="list-group-item filterable">
+                            <div class="multi-line">
+                                @Html.DisplayFor(modelItem => copy.Text)
+                            </div>
                             <div>
                                 @foreach (var tag in copy.Tags)
                                 {

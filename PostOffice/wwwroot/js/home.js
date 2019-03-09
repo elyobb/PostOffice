@@ -1,25 +1,42 @@
 ﻿$(document).ready(function () {
+    trimWhitespace();
     disableCheckboxes(true);
 
     $(".account").click(function () {
         $(".selected").removeClass("selected");
         $(".posted-checkbox").prop("checked", false);
+        $(".checked").removeClass("checked unchecked").addClass("unchecked");
         $(this).addClass("selected");
         disableCheckboxes(false);
-        var postedCopyList = retrievePostedCopy($(this).attr('id'));
-        showOrHidePosts();
+        retrievePostedCopy($(this).attr('id'));
+        $("#hide-posted").click();
+        showOrHidePosts();      
     });
 
     $(".posted-checkbox").click(function () {
         var checked = $(this).is(':checked');
         postForAccount($(".selected").attr("id"), $(this).attr("id"), checked);
+        if (checked) {
+            $(this).closest("li").removeClass("unchecked");
+            if (!$(this).closest("li").hasClass("checked")) {
+                $(this).closest("li").addClass("checked");
+            }
+        }
+        else {
+            $(this).closest("li").removeClass("checked");
+            if (!$(this).closest("li").hasClass("unchecked")) {
+                $(this).closest("li").addClass("unchecked");
+            }
+        }        
         showOrHidePosts();
     });
 
     $("#show-posted").click(function () {
-        $("li").each(function () {
-            $(this).show();
-        });
+        $(".checked").show();
+    }); 
+
+    $("#hide-posted").click(function () {
+        $(".checked").hide();
     });
 });
 
@@ -56,32 +73,37 @@ function retrievePostedCopy(accountId) {
             for (var i = 0; i < postedCopy.length; i++) {
                 markPosted(postedCopy[i].copyId);
             }
-
         }
     );
 }
 
 function markPosted(copyId) {
     $("#" + copyId + ".posted-checkbox").prop("checked", true);
-    $("#" + copyId + ".posted-checkbox").closest("li").hide();
+    $("#" + copyId + ".posted-checkbox").closest("li").removeClass("unchecked checked");
+    $("#" + copyId + ".posted-checkbox").closest("li").addClass("checked");
+    showOrHidePosts();
 }
 
 function showOrHidePosts() {
-    $("div.post-item").each(function () {
-        var chks = $(this).find("input:checkbox");
-        console.log(chks);
-        var numChecked = 0;
-        var element = $(this);
-        chks.each(function () {
-            if ($(this).prop('checked')) {
-                numChecked++;
-            }
-        });
-        if (numChecked === chks.length) {
-            $(element).hide();
+    $("li.unchecked").show();
+    var checked = $(".checked");
+    $("li.checked").hide();
+}
+
+function filter() {
+    $(".filterable").each(function () {
+        if ($(this).text().indexOf($("#filter").val()) !== -1) {
+            $(this).show();
+        } else {
+            $(this).hide();
         }
-        else {
-            $(element).show();
-        }
+    });
+
+}
+
+function trimWhitespace() {
+    $(".multi-line").each(function () {
+        var text = $(this).text();
+        $(this).text($.trim(text));
     });
 }
