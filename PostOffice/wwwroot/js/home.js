@@ -38,12 +38,51 @@
     $("#hide-posted").click(function () {
         $(".checked").hide();
     });
+
+    $('#modalTag').on('show.bs.modal', function (e) {
+
+        //get data-id attribute of the clicked element
+        var copyId = $(e.relatedTarget).data('copy-id');
+        $("#copyId").text(copyId);
+
+    });
+
+    $('#createTag').click(function () {
+        createTag(parseInt($("#copyId").text()), $("#tagLabelInput").val());
+    })
 });
 
 function disableCheckboxes(disabled) {
     $(".posted-checkbox").attr("disabled", disabled);
 }
 
+function createTag(copyId, tagLabel) {
+    $.ajax({
+        type: "POST",
+        url: "/Tags/CreateTag",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("RequestVerificationToken",
+                $('input:hidden[name="__RequestVerificationToken"]').val());
+        },
+        dataType: 'json',
+        data: {
+            'copyId': copyId,
+            'label':tagLabel
+        },
+        success: function (response) {
+            addTag(copyId, response.tagId, response.label);
+        },
+        failure: function (response) {
+            console.log("failure");
+        }
+    }); 
+    $('#modalTag').modal('hide');
+}
+
+function addTag(copyId, tagId, label) {
+    var tagListId = "#tagList" + copyId;
+    $(tagListId).append('<span class="tag" id="tag' + tagId + '">' + label + '</span>');
+}
 function postForAccount(accountId, copyId, checkedState) {
     $.ajax({
         type: "POST",

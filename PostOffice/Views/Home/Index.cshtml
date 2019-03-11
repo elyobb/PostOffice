@@ -17,10 +17,10 @@
     <div class="post-container">
         <div class="toolbar">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label class="btn btn-primary active" id="hide-posted" >
+                <label class="btn btn-primary active" id="hide-posted">
                     <input type="radio" name="options" autocomplete="off" checked> Hide Posted
                 </label>
-                <label class="btn btn-primary"  id="show-posted" >
+                <label class="btn btn-primary" id="show-posted">
                     <input type="radio" name="options" autocomplete="off"> Show Posted
                 </label>
             </div>
@@ -37,15 +37,18 @@
                 <ul class="list-group">
                     @foreach (var copy in item.Copy)
                     {
-                        <li class="list-group-item filterable">
+                        <li class="list-group-item filterable" id='@("copy"+copy.Id)'>
                             <div class="multi-line">
                                 @Html.DisplayFor(modelItem => copy.Text)
                             </div>
-                            <div>
-                                @foreach (var tag in copy.Tags)
-                                {
-                                    <span class="tag">@Html.DisplayFor(modelItem => tag.Label)</span>
-                                }
+                            <div class="tags">
+                                <div class="tagList" id='@("tagList"+copy.Id)'>
+                                    <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalTag" data-copy-id="@copy.Id">+ Tag</a>
+                                    @foreach (var tag in copy.Tags)
+                                    {
+                                        <span class="tag" id='@("tag"+tag.Id)'>@Html.DisplayFor(modelItem => tag.Label)</span>
+                                    }
+                                </div>
                             </div>
                             <div class="posted">
                                 <span><input type="checkbox" id='@copy.Id' class="middle posted-checkbox" /><span class="middle down">Posted for selected account</span></span>
@@ -57,7 +60,31 @@
         }
         <div class="end-message">End of available posts!</div>
     </div>
+    <div class="modal fade" id="modalTag" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">New Tag</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mx-3">
+                    <div class="md-form mb-5">
+                        <i class="fas fa-user prefix grey-text"></i>
+                        <label data-error="wrong" data-success="right" for="orangeForm-name">Tag Label</label>
+                        <input type="text" id="tagLabelInput" class="form-control validate">
+                    </div>
 
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button class="btn btn-deep-orange" id="createTag">Create</button>
+                </div>
+                <span class="hidden" id="copyId"></span>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section scripts {

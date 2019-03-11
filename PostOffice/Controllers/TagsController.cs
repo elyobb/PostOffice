@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PostOffice.Shared.Models;
 using PostOffice.ViewModels;
 
@@ -79,6 +80,33 @@ namespace PostOffice.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(tag);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateTag(int? copyId, string label)
+        {
+            if (copyId == null || label == null)
+            {
+                return NotFound();
+            }
+            var copyItem = _context.Copy.FirstOrDefault(c => c.Id.Equals(copyId));
+            Tag tag = new Tag
+            {
+                Label = label,
+                Copy = copyItem
+            };
+            if (ModelState.IsValid)
+            {
+                 _context.Add(tag);
+                await _context.SaveChangesAsync();
+                var returnData = new
+                {
+                    tagId = tag.Id,
+                    label = tag.Label
+                };
+                return Json(returnData);
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Tags/Edit/5
