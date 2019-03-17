@@ -44,11 +44,16 @@
         //get data-id attribute of the clicked element
         var copyId = $(e.relatedTarget).data('copy-id');
         $("#copyId").text(copyId);
-
     });
 
     $('#createTag').click(function () {
         createTag(parseInt($("#copyId").text()), $("#tagLabelInput").val());
+    });
+
+    $(".tagX").click(function () {
+        var tagId = $(this).attr("id").replace("tagX", "");
+        deleteTag(parseInt(tagId));
+        removeTag(tagId);
     })
 });
 
@@ -79,9 +84,35 @@ function createTag(copyId, tagLabel) {
     $('#modalTag').modal('hide');
 }
 
+function deleteTag(id) {
+    $.ajax({
+        type: "POST",
+        url: '/Tags/DeleteTag',
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("RequestVerificationToken",
+                $('input:hidden[name="__RequestVerificationToken"]').val());
+        },
+        dataType: 'json',
+        data: {
+            'tagId': id,
+        },
+        success: function (response) {
+            removeTag(id);
+        },
+        failure: function (response) {
+            console.log("failure to delete tag");
+        }
+    }); 
+}
+
+function removeTag(id)
+{
+    $("#tagX" + id).parent().remove();
+}
+
 function addTag(copyId, tagId, label) {
     var tagListId = "#tagList" + copyId;
-    $(tagListId).append('<span class="tag" id="tag' + tagId + '">' + label + '</span>');
+    $(tagListId).append('<span class="tag"><span id="tag' + tagId + '">' + label + '</span><span class="tagX" id="tagX'+tagId+'">&nbsp;&nbsp;x</span></span>');
 }
 function postForAccount(accountId, copyId, checkedState) {
     $.ajax({

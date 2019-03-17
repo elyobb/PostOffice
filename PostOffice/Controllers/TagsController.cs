@@ -189,6 +189,12 @@ namespace PostOffice.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteTag(int tagId)
+        {
+            return await DeleteConfirmed(tagId);
+        }
+
         private bool TagExists(int id)
         {
             return _context.Tags.Any(e => e.Id == id);

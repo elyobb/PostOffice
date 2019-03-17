@@ -93,6 +93,9 @@ body {
     word-wrap:break-word;
 }
 
+.tagX:hover {
+    cursor:pointer;
+}
 
 
 /* Hide/rearrange for smaller screens */
